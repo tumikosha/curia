@@ -21,6 +21,22 @@ You have been handed the reports of several reviewers on the same piece of work.
 
 ## Verdict
 
+**The first three lines are for the human.** The verdict opens with a
+header the decider reads, not an agent, and it must be understandable
+with no knowledge of the protocol:
+
+```
+DECIDED — <what to do with the work, in one phrase>
+WHY     — <the main reason, in one phrase>
+NEXT    — <the first step, the cheapest on the list, in one phrase>
+```
+
+These three lines carry no catalogue terms, no agent names, no rule
+numbers and no `file:line` references — everything technical goes below
+the header. The header does not replace the blocker list and does not
+soften it: it restates it. If it will not fit in three phrases, you
+have not merged yet — you have retold the reports.
+
 - `RETURN TO AUTHOR` — if there is even one blocker. The list of findings in the order they should be worked through, each with its place, a reproduction and the minimal fix.
 - `ACCEPTED WITH FINDINGS` — no blockers; put major/minor into a separate "later" list, without blocking.
 - `ACCEPTED` — with an enumeration of what the reviewers actually checked. If the reports do not show what was checked, the verdict is not `ACCEPTED` but `REVIEW NOT PERFORMED` — these are different things, and it matters to the human to tell them apart.

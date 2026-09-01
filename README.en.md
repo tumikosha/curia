@@ -47,54 +47,6 @@ receives a single verdict.
 
 The full protocol lives in [TEAM.md](TEAM.md).
 
-## Phases and rosters
-
-`larrey` works out the phase from the caller's question, or from the
-state of the work when no question was asked. Each phase has its own
-**starting roster** — the default for when the artifact shows nothing
-specific.
-
-| phase | the caller's question | phase base | cut order |
-|---|---|---|---|
-| **A** — before starting | "should we do this, will we win, will we survive" | [`hamming`](agents/hamming.md) + [`suntzu`](agents/suntzu.md) + [`munger`](agents/munger.md) | `suntzu` → `hamming` → `munger` |
-| **B** — in progress | "how do we work this through, are we digging in the right place" | [`descartes`](agents/descartes.md) + [`polya`](agents/polya.md) | `polya` → `descartes` |
-| **C** — finished | "done — verify it" | [`contract-reviewer`](agents/contract-reviewer.md) + [`adversarial`](agents/adversarial.md) | `adversarial` → `contract-reviewer` |
-
-On top of the base, the roster is filled out by **signs in the input**.
-The signs are not bound to a phase: a numeric promise pulls in `fermi`
-in a plan and in finished work alike. The rows are ranked by how
-specialist they are — on a capacity cut the bottom ones go first.
-
-| sign in the input | added | its question |
-|---|---|---|
-| a numeric promise, a limit | [`fermi`](agents/fermi.md) | does the arithmetic add up |
-| an irreversible step ahead, the speed of the decision | [`bezos`](agents/bezos.md) | which door is it, and is the process proportionate |
-| an incident, an RCA, a fix | [`ohno`](agents/ohno.md) | does it reach the root, does it stand on the site |
-| a conclusion plus observation material | [`darwin`](agents/darwin.md) | where is the contradicting evidence written down |
-| deletions | [`chesterton`](agents/chesterton.md) | is the fence's reason understood |
-| an optimization with a measure | [`goldratt`](agents/goldratt.md) | is the work aimed at the constraint |
-| a compromise, pain with no solution | [`altshuller`](agents/altshuller.md) | is the contradiction resolved |
-| a repeating cycle, tempo | [`boyd`](agents/boyd.md) | is the loop closed, is it shorter than the tempo |
-| a binary fork with arguments | [`franklin`](agents/franklin.md) | what remains after the striking out |
-| a long or ambiguous spec on finished work | [`reverse-spec-reviewer`](agents/reverse-spec-reviewer.md) | what spec does the artifact solve |
-| finished work before irreversible application: a data migration, prod config, a deploy with no rollback | [`premortem-reviewer`](agents/premortem-reviewer.md) | how did this fail |
-| a request to simplify or cut; a requirement with no named source | [`elon`](agents/elon.md) | question it, delete, simplify |
-
-Three rules on top of the tables:
-
-- **Round 1 is no more than four.** Over that, the base is cut in its
-  own order first, then the trigger agents from the bottom up. Every
-  agent cut is named with a reason, and their question goes into the
-  merge's "uncovered": one that vanishes silently is a hole, one cut
-  with a reason is a decision.
-- **The question's holder is never cut.** The holder is whoever's
-  jurisdiction the caller's question matched; with no question asked, it
-  is the last base agent in the cut order (A — `munger`, B —
-  `descartes`, C — `contract-reviewer`).
-- **Substitution.** When the input is a postmortem and there is nothing
-  to match it against, `contract-reviewer` drops out and `ohno` and
-  `darwin` take its place.
-
 ## Commands
 
 - [`/curia`](commands/curia.md) — assemble a review team for a
@@ -275,6 +227,93 @@ one verdict.** Merges several reviewers' reports into a single list of
 findings: discards the unproven, collapses duplicates, resolves
 conflicts, and delivers one verdict. Whatever went unjudged is honestly
 marked "uncovered". Called after two or more reviewers have finished.
+
+## Phases and rosters
+
+`larrey` works out the phase from the caller's question, or from the
+state of the work when no question was asked. Each phase has its own
+**starting roster** — the default for when the artifact shows nothing
+specific.
+
+| phase | the caller's question | phase base | cut order |
+|---|---|---|---|
+| **A** — before starting | "should we do this, will we win, will we survive" | [`hamming`](agents/hamming.md) + [`suntzu`](agents/suntzu.md) + [`munger`](agents/munger.md) | `suntzu` → `hamming` → `munger` |
+| **B** — in progress | "how do we work this through, are we digging in the right place" | [`descartes`](agents/descartes.md) + [`polya`](agents/polya.md) | `polya` → `descartes` |
+| **C** — finished | "done — verify it" | [`contract-reviewer`](agents/contract-reviewer.md) + [`adversarial`](agents/adversarial.md) | `adversarial` → `contract-reviewer` |
+
+On top of the base, the roster is filled out by **signs in the input**.
+The signs are not bound to a phase: a numeric promise pulls in `fermi`
+in a plan and in finished work alike. The row order is fixed for the
+sake of a deterministic cut: on a capacity cut the trigger agents go
+from the bottom up. It does not reflect how specialist they are.
+
+| sign in the input | added | its question |
+|---|---|---|
+| a numeric promise, a limit | [`fermi`](agents/fermi.md) | does the arithmetic add up |
+| an irreversible step ahead, the speed of the decision | [`bezos`](agents/bezos.md) | which door is it, and is the process proportionate |
+| an incident, an RCA, a fix | [`ohno`](agents/ohno.md) | does it reach the root, does it stand on the site |
+| a conclusion plus observation material | [`darwin`](agents/darwin.md) | where is the contradicting evidence written down |
+| deletions | [`chesterton`](agents/chesterton.md) | is the fence's reason understood |
+| an optimization with a measure | [`goldratt`](agents/goldratt.md) | is the work aimed at the constraint |
+| a compromise, pain with no solution | [`altshuller`](agents/altshuller.md) | is the contradiction resolved |
+| a repeating cycle, tempo | [`boyd`](agents/boyd.md) | is the loop closed, is it shorter than the tempo |
+| a binary fork with arguments | [`franklin`](agents/franklin.md) | what remains after the striking out |
+| a long or ambiguous spec on finished work | [`reverse-spec-reviewer`](agents/reverse-spec-reviewer.md) | what spec does the artifact solve |
+| finished work before irreversible application: a data migration, prod config, a deploy with no rollback | [`premortem-reviewer`](agents/premortem-reviewer.md) | how did this fail |
+| a request to simplify or cut; a requirement with no named source | [`elon`](agents/elon.md) | question it, delete, simplify |
+
+Three rules on top of the tables:
+
+- **Round 1 is no more than the roster budget.** The caller sets the
+  budget before triage; its default and its ceiling are four. Over
+  that, the base is cut in its
+  own order first, then the trigger agents from the bottom up. Every
+  agent cut is named with a reason, and their question goes into the
+  merge's "uncovered": one that vanishes silently is a hole, one cut
+  with a reason is a decision.
+- **The question's holder is never cut.** The holder is whoever's
+  jurisdiction the caller's question matched; with no question asked, it
+  is the last base agent in the cut order (A — `munger`, B —
+  `descartes`, C — `contract-reviewer`).
+- **Substitution.** When the input is a postmortem and there is nothing
+  to match it against, `contract-reviewer` drops out and `ohno` and
+  `darwin` take its place.
+
+### A review with no capacity cut
+
+The limit is set in the call, before triage — then there are no cuts at
+all:
+
+```
+/curia roster limit 8 | migrating billing to the new schema
+```
+
+Or it is raised at the pause. On a capacity cut the caller must stop,
+show you the roster and the agents cut with their reasons verbatim, and
+wait for an answer; "raise it to N" re-runs `larrey` with the new limit,
+and whoever comes back leaves "uncovered". This is a regular branch of
+the protocol, not a way around it.
+
+Only the capacity cut lifts. A "question not touched" cut is not cured
+by any N: `franklin` was not called because the input holds no binary
+fork, and inventing a reason to get the roster you wanted is forbidden
+as fabrication. The ceiling is the phase base plus the trigger agents
+whose signs were actually detected; to get more judges, add material,
+not limit — `boyd` arrives when the input carries the environment's
+tempo, not when the limit goes to twenty.
+
+The limit applies to round 1. Round 2 has its own rules: no more than
+two agents, and they arrive not by your assignment but as redirect lines
+out of round 1's reports. There is no round 3 — widening coverage is
+often cheaper through a handoff than through a bloated first round.
+
+The limit is a budget ceiling, not a guard against an unreadable
+verdict: what reaches the human is the arbiter's single verdict, not
+the judges' reports, so the "choir" never gets there at any roster
+size. What the limit does hold is this — the budget field in `/curia`
+is capped by nothing else, and every seat in the roster is paid for.
+Raising it to six or eight on a large input is reasonable; removing it
+altogether leaves no ceiling at all.
 
 ## Repository layout
 
