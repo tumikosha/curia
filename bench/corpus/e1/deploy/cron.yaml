@@ -1,0 +1,11 @@
+# Расписание фоновых задач (celery beat)
+schedule:
+  returns_report_daily:
+    task: reports.worker.deliver_returns_report
+    cron: "15 03 * * *"     # 03:15 UTC, после ночной сверки заказов
+    options:
+      expires: 3600
+  returns_cache_warmup:
+    task: reports.cache.cached_returns_by_store
+    cron: "05 03 * * *"     # прогреть кэш агрегатов до построения отчёта
+    args: ["{{ yesterday }}"]

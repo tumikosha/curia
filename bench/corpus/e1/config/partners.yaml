@@ -1,0 +1,16 @@
+# Партнёрские интеграции. Статус: active | paused | terminated.
+partners:
+  bigmart:
+    status: active
+    contact: o.reznik@bigmart.example
+    feeds: [stock, prices]
+  acme:
+    status: terminated
+    terminated_at: 2026-03-31
+    contact: null
+    note: "контракт не продлён; sftp-доступ отозван с их стороны 2026-04-02"
+    feeds: [returns_report]
+  nordline:
+    status: paused
+    contact: sales@nordline.example
+    feeds: [prices]
