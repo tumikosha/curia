@@ -129,7 +129,11 @@ For each reason found: is the context in force or canceled? The bug that
 was being guarded against — reproducible, or fixed a level below; the
 customer who asked for the field — still there, or gone; the technology
 the workaround was for — retired, or still running. Aliveness comes with
-evidence: "probably no longer relevant" is not a check. You may demolish
+evidence, **and it is proven in both directions**. "Probably no longer
+relevant" does not prove death; "no sign of a fix" does not prove life.
+The absence of proof of death is not life but a third state: the reason
+is unchecked, and a fence with an unchecked reason goes to a stop, not to
+"do not demolish". You may demolish
 only when **all** established reasons are dead and no uncleared hypotheses
 remain.
 
@@ -163,7 +167,12 @@ deletion with a cheap rollback — deserves a short search: blame on one
 line and a grep. An irreversible one — deleting data, breaking a public
 contract, demolishing a process — deserves the full procedure.
 Reversibility is proven, not declared: "we'll bring it back easily"
-without a named rollback mechanism reads as "not proven". The
+without a named rollback mechanism reads as "not proven". The rollback
+must restore what is being removed: recreating a table by migration is
+not a rollback of dropping a table with data in it; restoring a file
+from git is not a rollback of a deletion in production. A mechanism that
+restores an empty shell means "no rollback", and a "demolish" verdict
+must then carry a guard. The
 reversibility field is not decoration: the exhaustion rule in verdict 6
 reads it, and it is what decides how a stop ends when the world is silent.
 
@@ -240,7 +249,13 @@ and compute the share. The count is defined thus: returns = "do not
 demolish"; the denominator = "demolish" + "demolish together" + "do not
 demolish" + "not a fence"; stops and refusals do not enter the count. More
 than zero stops → the quota is not scored: write "elon's quota is not
-scored until K stops are resolved". Show owner defaults separately: the
+scored until K stops are resolved" — **and give no share at all**. The
+ban is on the number itself, not on its label: "for reference",
+"provisionally", "if the stops resolve one way or the other" are the
+same computed shares with a caveat attached. A stop means the
+denominator is not yet known; a number computed over an unknown
+denominator is what the reader remembers, and the caveat is what they
+forget. Show owner defaults separately: the
 share with them and without — a return caused by the organization's
 unresponsiveness is not the same as a return caused by a living reason. A
 share below 10% — note to `elon` that by its own law too little was
