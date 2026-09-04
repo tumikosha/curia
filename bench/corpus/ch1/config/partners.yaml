@@ -1,0 +1,8 @@
+partners:
+  nordbank:
+    status: terminated
+    terminated_at: 2026-02-14
+    note: "приём выплат прекращён; читал csv-выгрузку и требовал IBAN без пробелов"
+  westpay:
+    status: active
+    feeds: [charges]
